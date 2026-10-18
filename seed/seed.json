@@ -2,130 +2,588 @@
 	"$schema": "https://emdashcms.com/seed.schema.json",
 	"version": "1",
 	"meta": {
-		"name": "Blog Starter",
-		"description": "A blog with posts and pages",
+		"name": "Marketing Starter",
+		"description": "A photo-led marketing site for a product or service, built from modular blocks",
 		"author": "EmDash"
 	},
 	"settings": {
-		"title": "My Blog",
-		"tagline": "Thoughts on building for the web"
+		"title": "Halden",
+		"tagline": "Energy intelligence for commercial buildings",
+		"seo": { "titleSeparator": "—" }
 	},
-	"collections": [
+	"blockTypes": [
 		{
-			"slug": "posts",
-			"label": "Posts",
-			"labelSingular": "Post",
-			"urlPattern": "/posts/{slug}",
-			"supports": ["drafts", "revisions", "preview", "scheduling", "search", "seo"],
-			"commentsEnabled": true,
-			"fields": [
+			"slug": "marketing_hero",
+			"label": "Hero",
+			"description": "A prominent page introduction with optional calls to action and media",
+			"category": "Marketing",
+			"currentVersion": 1,
+			"versions": [
 				{
-					"slug": "title",
-					"label": "Title",
-					"type": "string",
-					"required": true,
-					"searchable": true
-				},
-				{
-					"slug": "featured_image",
-					"label": "Featured Image",
-					"type": "image"
-				},
-				{
-					"slug": "content",
-					"label": "Content",
-					"type": "portableText",
-					"searchable": true
-				},
-				{
-					"slug": "excerpt",
-					"label": "Excerpt",
-					"type": "text"
+					"version": 1,
+					"fields": [
+						{ "slug": "headline", "label": "Headline", "type": "string", "required": true },
+						{ "slug": "subheadline", "label": "Subheadline", "type": "text" },
+						{ "slug": "primary_cta_label", "label": "Primary button text", "type": "string" },
+						{
+							"slug": "primary_cta_url",
+							"label": "Primary button link (starts with /, https://, mailto:, tel: or #)",
+							"type": "string",
+							"validation": { "pattern": "^(?:$|(?:https?://|mailto:|tel:|/(?!/)|#).+)$" }
+						},
+						{ "slug": "secondary_cta_label", "label": "Secondary button text", "type": "string" },
+						{
+							"slug": "secondary_cta_url",
+							"label": "Secondary button link (starts with /, https://, mailto:, tel: or #)",
+							"type": "string",
+							"validation": { "pattern": "^(?:$|(?:https?://|mailto:|tel:|/(?!/)|#).+)$" }
+						},
+						{ "slug": "image", "label": "Image", "type": "image" },
+						{
+							"slug": "image_caption",
+							"label": "Image caption (shown on the photo)",
+							"type": "string"
+						},
+						{
+							"slug": "eyebrow",
+							"label": "Announcement (shown above the headline)",
+							"type": "string"
+						},
+						{
+							"slug": "eyebrow_url",
+							"label": "Announcement link (starts with /, https://, mailto:, tel: or #)",
+							"type": "string",
+							"validation": { "pattern": "^(?:$|/(?!/|\\\\).*|(?:https?://|mailto:|tel:|#).+)$" }
+						},
+						{
+							"slug": "centered",
+							"label": "Center the layout",
+							"type": "boolean",
+							"defaultValue": false
+						},
+						{
+							"slug": "anchor_id",
+							"label": "Section ID (lowercase, for links like /#pricing)",
+							"type": "string",
+							"validation": { "pattern": "^(?:$|[a-z][a-z0-9_-]*)$" }
+						}
+					]
 				}
 			]
 		},
+		{
+			"slug": "marketing_features",
+			"label": "Features",
+			"description": "A grid of product or service features",
+			"category": "Marketing",
+			"currentVersion": 1,
+			"versions": [
+				{
+					"version": 1,
+					"fields": [
+						{ "slug": "headline", "label": "Headline", "type": "string", "required": true },
+						{
+							"slug": "subheadline",
+							"label": "Second sentence (shown muted after the headline)",
+							"type": "text"
+						},
+						{ "slug": "eyebrow", "label": "Label above headline", "type": "string" },
+						{
+							"slug": "features",
+							"label": "Features",
+							"type": "repeater",
+							"required": true,
+							"validation": {
+								"minItems": 1,
+								"maxItems": 12,
+								"subFields": [
+									{
+										"slug": "icon",
+										"label": "Icon",
+										"type": "select",
+										"required": true,
+										"options": [
+											"zap",
+											"shield",
+											"users",
+											"chart",
+											"code",
+											"globe",
+											"heart",
+											"star",
+											"check",
+											"lock",
+											"clock",
+											"cloud",
+											"building",
+											"leaf",
+											"gauge",
+											"thermometer",
+											"plug",
+											"bell",
+											"file",
+											"sun",
+											"trend"
+										]
+									},
+									{ "slug": "title", "label": "Title", "type": "string", "required": true },
+									{
+										"slug": "description",
+										"label": "Description (leave a blank line between paragraphs)",
+										"type": "text",
+										"required": true
+									}
+								]
+							}
+						},
+						{
+							"slug": "anchor_id",
+							"label": "Section ID (lowercase, for links like /#pricing)",
+							"type": "string",
+							"validation": { "pattern": "^(?:$|[a-z][a-z0-9_-]*)$" }
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "marketing_testimonials",
+			"label": "Testimonials",
+			"description": "Customer quotes and attribution. The first quote is shown large",
+			"category": "Marketing",
+			"currentVersion": 1,
+			"versions": [
+				{
+					"version": 1,
+					"fields": [
+						{
+							"slug": "headline",
+							"label": "Section label (small text above the quotes)",
+							"type": "string"
+						},
+						{
+							"slug": "testimonials",
+							"label": "Testimonials",
+							"type": "repeater",
+							"required": true,
+							"validation": {
+								"minItems": 1,
+								"maxItems": 12,
+								"subFields": [
+									{
+										"slug": "quote",
+										"label": "Quote (leave a blank line between paragraphs)",
+										"type": "text",
+										"required": true
+									},
+									{ "slug": "author", "label": "Author name", "type": "string", "required": true },
+									{ "slug": "role", "label": "Role or title", "type": "string" },
+									{ "slug": "company", "label": "Company", "type": "string" },
+									{
+										"slug": "avatar",
+										"label": "Avatar (initials show when empty)",
+										"type": "image"
+									}
+								]
+							}
+						},
+						{
+							"slug": "anchor_id",
+							"label": "Section ID (lowercase, for links like /#pricing)",
+							"type": "string",
+							"validation": { "pattern": "^(?:$|[a-z][a-z0-9_-]*)$" }
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "marketing_pricing",
+			"label": "Pricing",
+			"description": "A comparison of up to three pricing plans",
+			"category": "Marketing",
+			"currentVersion": 1,
+			"versions": [
+				{
+					"version": 1,
+					"fields": [
+						{ "slug": "headline", "label": "Headline", "type": "string" },
+						{
+							"slug": "plans",
+							"label": "Plans",
+							"type": "repeater",
+							"required": true,
+							"validation": {
+								"minItems": 1,
+								"maxItems": 3,
+								"subFields": [
+									{ "slug": "name", "label": "Plan name", "type": "string", "required": true },
+									{ "slug": "price", "label": "Price", "type": "string", "required": true },
+									{ "slug": "period", "label": "Period", "type": "string" },
+									{
+										"slug": "description",
+										"label": "Description (leave a blank line between paragraphs)",
+										"type": "text"
+									},
+									{ "slug": "features", "label": "Features (one per line)", "type": "text" },
+									{
+										"slug": "cta_label",
+										"label": "Button text",
+										"type": "string",
+										"required": true
+									},
+									{
+										"slug": "cta_url",
+										"label": "Button link (starts with /, https://, mailto:, tel: or #)",
+										"type": "string",
+										"required": true
+									},
+									{ "slug": "highlighted", "label": "Highlight this plan", "type": "boolean" },
+									{
+										"slug": "badge",
+										"label": "Badge text, for example Most popular",
+										"type": "string"
+									}
+								]
+							}
+						},
+						{
+							"slug": "anchor_id",
+							"label": "Section ID (lowercase, for links like /#pricing)",
+							"type": "string",
+							"validation": { "pattern": "^(?:$|[a-z][a-z0-9_-]*)$" }
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "marketing_faq",
+			"label": "FAQ",
+			"description": "A list of frequently asked questions",
+			"category": "Marketing",
+			"currentVersion": 1,
+			"versions": [
+				{
+					"version": 1,
+					"fields": [
+						{ "slug": "headline", "label": "Headline", "type": "string" },
+						{ "slug": "subheadline", "label": "Subheadline", "type": "text" },
+						{
+							"slug": "items",
+							"label": "Questions",
+							"type": "repeater",
+							"required": true,
+							"validation": {
+								"minItems": 1,
+								"maxItems": 12,
+								"subFields": [
+									{ "slug": "question", "label": "Question", "type": "string", "required": true },
+									{
+										"slug": "answer",
+										"label": "Answer (leave a blank line between paragraphs)",
+										"type": "text",
+										"required": true
+									}
+								]
+							}
+						},
+						{
+							"slug": "anchor_id",
+							"label": "Section ID (lowercase, for links like /#pricing)",
+							"type": "string",
+							"validation": { "pattern": "^(?:$|[a-z][a-z0-9_-]*)$" }
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "marketing_logos",
+			"label": "Logo wall",
+			"description": "A scrolling row of customer or partner logos. Names without a logo show as text",
+			"category": "Marketing",
+			"currentVersion": 1,
+			"versions": [
+				{
+					"version": 1,
+					"fields": [
+						{
+							"slug": "headline",
+							"label": "Section label (small text above the logos)",
+							"type": "string"
+						},
+						{
+							"slug": "logos",
+							"label": "Logos",
+							"type": "repeater",
+							"required": true,
+							"validation": {
+								"minItems": 1,
+								"maxItems": 24,
+								"subFields": [
+									{ "slug": "name", "label": "Company name", "type": "string", "required": true },
+									{ "slug": "logo", "label": "Logo", "type": "image" }
+								]
+							}
+						},
+						{
+							"slug": "anchor_id",
+							"label": "Section ID (lowercase, for links like /#pricing)",
+							"type": "string",
+							"validation": { "pattern": "^(?:$|[a-z][a-z0-9_-]*)$" }
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "marketing_split",
+			"label": "Text and image",
+			"description": "A headline, copy and checklist beside a photo",
+			"category": "Marketing",
+			"currentVersion": 1,
+			"versions": [
+				{
+					"version": 1,
+					"fields": [
+						{ "slug": "headline", "label": "Headline", "type": "string", "required": true },
+						{ "slug": "eyebrow", "label": "Label above headline", "type": "string" },
+						{
+							"slug": "body",
+							"label": "Body (leave a blank line between paragraphs)",
+							"type": "text"
+						},
+						{ "slug": "points", "label": "Checklist (one item per line)", "type": "text" },
+						{ "slug": "cta_label", "label": "Link text", "type": "string" },
+						{
+							"slug": "cta_url",
+							"label": "Link (starts with /, https://, mailto:, tel: or #)",
+							"type": "string",
+							"validation": { "pattern": "^(?:$|/(?!/|\\\\).*|(?:https?://|mailto:|tel:|#).+)$" }
+						},
+						{ "slug": "image", "label": "Image", "type": "image" },
+						{
+							"slug": "image_caption",
+							"label": "Image caption (shown on the photo)",
+							"type": "string"
+						},
+						{
+							"slug": "image_first",
+							"label": "Show the image first",
+							"type": "boolean",
+							"defaultValue": false
+						},
+						{
+							"slug": "anchor_id",
+							"label": "Section ID (lowercase, for links like /#pricing)",
+							"type": "string",
+							"validation": { "pattern": "^(?:$|[a-z][a-z0-9_-]*)$" }
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "marketing_stats",
+			"label": "Stats",
+			"description": "Headline numbers on a dark panel",
+			"category": "Marketing",
+			"currentVersion": 1,
+			"versions": [
+				{
+					"version": 1,
+					"fields": [
+						{ "slug": "headline", "label": "Headline", "type": "string" },
+						{
+							"slug": "subheadline",
+							"label": "Second sentence (shown muted after the headline)",
+							"type": "text"
+						},
+						{
+							"slug": "stats",
+							"label": "Stats",
+							"type": "repeater",
+							"required": true,
+							"validation": {
+								"minItems": 1,
+								"maxItems": 6,
+								"subFields": [
+									{ "slug": "value", "label": "Value", "type": "string", "required": true },
+									{ "slug": "label", "label": "Label", "type": "string", "required": true }
+								]
+							}
+						},
+						{
+							"slug": "anchor_id",
+							"label": "Section ID (lowercase, for links like /#pricing)",
+							"type": "string",
+							"validation": { "pattern": "^(?:$|[a-z][a-z0-9_-]*)$" }
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "marketing_cta",
+			"label": "Call to action",
+			"description": "A closing call to action over a photo or dark panel",
+			"category": "Marketing",
+			"currentVersion": 1,
+			"versions": [
+				{
+					"version": 1,
+					"fields": [
+						{ "slug": "headline", "label": "Headline", "type": "string", "required": true },
+						{
+							"slug": "body",
+							"label": "Body (leave a blank line between paragraphs)",
+							"type": "text"
+						},
+						{ "slug": "primary_cta_label", "label": "Primary button text", "type": "string" },
+						{
+							"slug": "primary_cta_url",
+							"label": "Primary button link (starts with /, https://, mailto:, tel: or #)",
+							"type": "string",
+							"validation": { "pattern": "^(?:$|/(?!/|\\\\).*|(?:https?://|mailto:|tel:|#).+)$" }
+						},
+						{ "slug": "secondary_cta_label", "label": "Secondary button text", "type": "string" },
+						{
+							"slug": "secondary_cta_url",
+							"label": "Secondary button link (starts with /, https://, mailto:, tel: or #)",
+							"type": "string",
+							"validation": { "pattern": "^(?:$|/(?!/|\\\\).*|(?:https?://|mailto:|tel:|#).+)$" }
+						},
+						{ "slug": "image", "label": "Background image", "type": "image" },
+						{
+							"slug": "anchor_id",
+							"label": "Section ID (lowercase, for links like /#pricing)",
+							"type": "string",
+							"validation": { "pattern": "^(?:$|[a-z][a-z0-9_-]*)$" }
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "marketing_contact",
+			"label": "Contact options",
+			"description": "Cards that point readers to the right email address, phone number or page",
+			"category": "Marketing",
+			"currentVersion": 1,
+			"versions": [
+				{
+					"version": 1,
+					"fields": [
+						{ "slug": "headline", "label": "Headline", "type": "string" },
+						{ "slug": "eyebrow", "label": "Label above headline", "type": "string" },
+						{ "slug": "subheadline", "label": "Subheadline", "type": "text" },
+						{
+							"slug": "options",
+							"label": "Contact options",
+							"type": "repeater",
+							"required": true,
+							"validation": {
+								"minItems": 1,
+								"maxItems": 6,
+								"subFields": [
+									{
+										"slug": "icon",
+										"label": "Icon",
+										"type": "select",
+										"required": true,
+										"options": ["email", "support", "sales", "phone", "chat", "location"]
+									},
+									{ "slug": "title", "label": "Title", "type": "string", "required": true },
+									{
+										"slug": "description",
+										"label": "Description (leave a blank line between paragraphs)",
+										"type": "text"
+									},
+									{
+										"slug": "link_label",
+										"label": "Link text",
+										"type": "string",
+										"required": true
+									},
+									{
+										"slug": "link_url",
+										"label": "Link (starts with /, https://, mailto:, tel: or #)",
+										"type": "url",
+										"required": true
+									}
+								]
+							}
+						},
+						{
+							"slug": "anchor_id",
+							"label": "Section ID (lowercase, for links like /#pricing)",
+							"type": "string",
+							"validation": { "pattern": "^(?:$|[a-z][a-z0-9_-]*)$" }
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "marketing_text",
+			"label": "Text",
+			"description": "Long-form text with headings, lists and links, for pages like About or Privacy",
+			"category": "Marketing",
+			"currentVersion": 1,
+			"versions": [
+				{
+					"version": 1,
+					"fields": [
+						{ "slug": "headline", "label": "Headline", "type": "string" },
+						{ "slug": "body", "label": "Body", "type": "portableText", "required": true },
+						{
+							"slug": "anchor_id",
+							"label": "Section ID (lowercase, for links like /#pricing)",
+							"type": "string",
+							"validation": { "pattern": "^(?:$|[a-z][a-z0-9_-]*)$" }
+						}
+					]
+				}
+			]
+		}
+	],
+	"collections": [
 		{
 			"slug": "pages",
 			"label": "Pages",
 			"labelSingular": "Page",
-			"urlPattern": "/pages/{slug}",
-			"supports": ["drafts", "revisions", "preview", "search", "seo"],
+			"urlPattern": "/{slug}",
+			"supports": ["drafts", "revisions", "preview", "seo"],
 			"fields": [
 				{
 					"slug": "title",
 					"label": "Title",
 					"type": "string",
-					"required": true,
-					"searchable": true
+					"required": true
 				},
 				{
 					"slug": "content",
 					"label": "Content",
-					"type": "portableText",
-					"searchable": true
+					"type": "blocks",
+					"validation": {
+						"allowedTypes": [
+							"marketing_hero",
+							"marketing_features",
+							"marketing_testimonials",
+							"marketing_pricing",
+							"marketing_faq",
+							"marketing_logos",
+							"marketing_split",
+							"marketing_stats",
+							"marketing_cta",
+							"marketing_contact",
+							"marketing_text"
+						],
+						"maxItems": 20
+					}
 				}
 			]
-		}
-	],
-	"taxonomies": [
-		{
-			"name": "category",
-			"label": "Categories",
-			"labelSingular": "Category",
-			"hierarchical": true,
-			"collections": ["posts"],
-			"terms": [
-				{
-					"slug": "development",
-					"label": "Development"
-				},
-				{
-					"slug": "design",
-					"label": "Design"
-				},
-				{
-					"slug": "notes",
-					"label": "Notes"
-				}
-			]
-		},
-		{
-			"name": "tag",
-			"label": "Tags",
-			"labelSingular": "Tag",
-			"hierarchical": false,
-			"collections": ["posts"],
-			"terms": [
-				{
-					"slug": "webdev",
-					"label": "Web Development"
-				},
-				{
-					"slug": "opinion",
-					"label": "Opinion"
-				},
-				{
-					"slug": "tools",
-					"label": "Tools"
-				},
-				{
-					"slug": "creativity",
-					"label": "Creativity"
-				}
-			]
-		}
-	],
-	"bylines": [
-		{
-			"id": "byline-editorial",
-			"slug": "emdash-editorial",
-			"displayName": "EmDash Editorial"
-		},
-		{
-			"id": "byline-guest",
-			"slug": "guest-contributor",
-			"displayName": "Guest Contributor",
-			"isGuest": true
 		}
 	],
 	"menus": [
@@ -135,802 +593,414 @@
 			"items": [
 				{
 					"type": "custom",
-					"label": "Home",
-					"url": "/"
+					"label": "Platform",
+					"url": "/#platform"
 				},
 				{
 					"type": "custom",
-					"label": "About",
-					"url": "/pages/about"
+					"label": "Monitoring",
+					"url": "/#monitoring"
 				},
 				{
 					"type": "custom",
-					"label": "Posts",
-					"url": "/posts"
-				}
-			]
-		}
-	],
-	"widgetAreas": [
-		{
-			"name": "sidebar",
-			"label": "Sidebar",
-			"description": "Widget area displayed on single post pages",
-			"widgets": [
-				{
-					"type": "component",
-					"componentId": "core:search",
-					"title": "Search"
+					"label": "Customers",
+					"url": "/#customers"
 				},
 				{
-					"type": "component",
-					"componentId": "core:categories",
-					"title": "Categories"
+					"type": "custom",
+					"label": "Pricing",
+					"url": "/pricing"
 				},
 				{
-					"type": "component",
-					"componentId": "core:tags",
-					"title": "Tags"
+					"type": "custom",
+					"label": "Contact",
+					"url": "/contact"
 				},
 				{
-					"type": "component",
-					"componentId": "core:recent-posts",
-					"title": "Recent Posts",
-					"props": {
-						"count": 5,
-						"showDate": true
-					}
-				},
-				{
-					"type": "component",
-					"componentId": "core:archives",
-					"title": "Archives",
-					"props": {
-						"type": "monthly",
-						"limit": 6
-					}
+					"type": "custom",
+					"label": "Book a demo",
+					"url": "/contact",
+					"cssClasses": "button"
 				}
 			]
 		},
 		{
-			"name": "footer",
-			"label": "Footer",
-			"description": "Widget area displayed in the site footer",
-			"widgets": [
-				{
-					"type": "content",
-					"title": "About",
-					"content": [
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "A blog about software, design, and the occasional stray thought.",
-									"_key": "k1"
-								}
-							],
-							"_key": "k0"
-						}
-					]
-				}
-			]
-		}
-	],
-	"sections": [
-		{
-			"slug": "newsletter-signup",
-			"title": "Newsletter Signup",
-			"description": "A call-to-action block for newsletter subscriptions",
-			"keywords": ["newsletter", "subscribe", "email", "cta"],
-			"source": "theme",
-			"content": [
-				{
-					"_type": "block",
-					"style": "h3",
-					"children": [
-						{
-							"_type": "span",
-							"text": "Stay in the loop",
-							"_key": "k1"
-						}
-					],
-					"_key": "k0"
-				},
-				{
-					"_type": "block",
-					"style": "normal",
-					"children": [
-						{
-							"_type": "span",
-							"text": "Get notified when new posts are published. No spam, unsubscribe anytime.",
-							"_key": "k3"
-						}
-					],
-					"_key": "k2"
-				}
+			"name": "footer_product",
+			"label": "Product",
+			"items": [
+				{ "type": "custom", "label": "Platform", "url": "/#platform" },
+				{ "type": "custom", "label": "Monitoring", "url": "/#monitoring" },
+				{ "type": "custom", "label": "Planning", "url": "/#planning" },
+				{ "type": "custom", "label": "Pricing", "url": "/pricing" }
 			]
 		},
 		{
-			"slug": "about-author",
-			"title": "About the Author",
-			"description": "Brief author bio for use in posts or pages",
-			"keywords": ["author", "bio", "about"],
-			"source": "theme",
-			"content": [
-				{
-					"_type": "block",
-					"style": "normal",
-					"children": [
-						{
-							"_type": "span",
-							"text": "A software developer who writes about building things on the web. Based somewhere with good coffee and reliable internet.",
-							"_key": "k1"
-						}
-					],
-					"_key": "k0"
-				}
+			"name": "footer_company",
+			"label": "Company",
+			"items": [
+				{ "type": "custom", "label": "Customers", "url": "/#customers" },
+				{ "type": "custom", "label": "FAQ", "url": "/#faq" },
+				{ "type": "custom", "label": "Contact", "url": "/contact" }
+			]
+		},
+		{
+			"name": "footer_support",
+			"label": "Support",
+			"items": [
+				{ "type": "custom", "label": "Talk to sales", "url": "mailto:sales@halden.example" },
+				{ "type": "custom", "label": "Support", "url": "mailto:support@halden.example" },
+				{ "type": "custom", "label": "Email us", "url": "mailto:hello@halden.example" }
 			]
 		}
 	],
 	"content": {
 		"pages": [
 			{
-				"id": "about",
-				"slug": "about",
+				"id": "home",
+				"slug": "home",
 				"status": "published",
 				"data": {
-					"title": "About",
+					"title": "Home",
 					"content": [
 						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "A place for writing about software, design, and the occasional stray thought. No posting schedule, no newsletter funnel. Just things I wanted to write down.",
-									"_key": "k1"
+							"_type": "marketing_hero",
+							"_version": 1,
+							"_key": "hero",
+							"eyebrow": "New: automated CSRD and GRESB reporting",
+							"eyebrow_url": "/#planning",
+							"headline": "Every building, running at its best.",
+							"subheadline": "Halden connects to the meters and systems you already have, finds the waste, and fixes it automatically, across one building or ten thousand.",
+							"primary_cta_label": "Book a demo",
+							"primary_cta_url": "/contact",
+							"secondary_cta_label": "See how it works",
+							"secondary_cta_url": "/#platform",
+							"image": {
+								"$media": {
+									"url": "https://images.unsplash.com/photo-1476889833843-503f40e367a0?w=2400&h=1350&fit=crop&q=80&fm=jpg",
+									"alt": "Concrete atrium with round skylights, seen from below",
+									"filename": "halden-atrium.jpg"
 								}
-							],
-							"_key": "k0"
+							},
+							"image_caption": "Riverside Tower · 18% below its 2024 energy baseline"
 						},
 						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
+							"_type": "marketing_logos",
+							"_version": 1,
+							"_key": "logos",
+							"headline": "Trusted by property, hospitality and campus teams",
+							"logos": [
+								{ "name": "Oakline" },
+								{ "name": "Arden Hotels" },
+								{ "name": "Calder" },
+								{ "name": "Westmere" },
+								{ "name": "Kestrel" },
+								{ "name": "Northfield" }
+							]
+						},
+						{
+							"_type": "marketing_features",
+							"_version": 1,
+							"_key": "platform",
+							"anchor_id": "platform",
+							"eyebrow": "Platform",
+							"headline": "One platform for every building.",
+							"subheadline": "Meters, controls and reports, finally in one place.",
+							"features": [
 								{
-									"_type": "span",
-									"text": "Built with Astro and EmDash. The source is open if you want to see how it works.",
-									"_key": "k3"
+									"icon": "gauge",
+									"title": "Every meter, one view",
+									"description": "Electricity, gas, water and heat from every site, normalised and live."
+								},
+								{
+									"icon": "zap",
+									"title": "Fixes that run themselves",
+									"description": "When a building drifts, Halden adjusts schedules and setpoints, then shows what it saved."
+								},
+								{
+									"icon": "file",
+									"title": "Reports in minutes",
+									"description": "CSRD, GRESB and ENERGY STAR submissions from the same data, ready for your auditor."
+								},
+								{
+									"icon": "chart",
+									"title": "Benchmarks that mean something",
+									"description": "Compare buildings by type, climate and occupancy, not just floor area."
+								},
+								{
+									"icon": "plug",
+									"title": "Works with what you have",
+									"description": "Connects to your existing BMS, meters and utility accounts. No rip and replace."
+								},
+								{
+									"icon": "trend",
+									"title": "Budgets you can trust",
+									"description": "Forecast spend and carbon a year ahead, with weather and tariffs built in."
 								}
-							],
-							"_key": "k2"
+							]
+						},
+						{
+							"_type": "marketing_split",
+							"_version": 1,
+							"_key": "monitoring",
+							"anchor_id": "monitoring",
+							"eyebrow": "Monitoring",
+							"headline": "See every kilowatt, room by room.",
+							"body": "Halden reads your meters every fifteen minutes and learns how each building should behave. When a chiller runs overnight or a floor heats an empty office, you know before the bill does.",
+							"points": "Live data from 400+ meter and BMS integrations\nAlerts ranked by cost, not by noise\nEvery fix logged with the saving it made",
+							"cta_label": "Book a walkthrough",
+							"cta_url": "/contact",
+							"image": {
+								"$media": {
+									"url": "https://images.unsplash.com/photo-1504297050568-910d24c426d3?w=1200&h=1500&fit=crop&q=80&fm=jpg",
+									"alt": "Office corridor with glass walls and concrete columns",
+									"filename": "halden-corridor.jpg"
+								}
+							},
+							"image_caption": "Floor 3 · 21.4 °C · CO₂ 612 ppm"
+						},
+						{
+							"_type": "marketing_split",
+							"_version": 1,
+							"_key": "planning",
+							"anchor_id": "planning",
+							"eyebrow": "Planning",
+							"headline": "Plan the path to net zero.",
+							"body": "Model retrofits, solar and electrification against how your buildings really run, then track every project against the plan.",
+							"points": "Scenario plans for every building\nPayback and carbon side by side\nBoard-ready progress reports",
+							"cta_label": "See pricing",
+							"cta_url": "/pricing",
+							"image": {
+								"$media": {
+									"url": "https://images.unsplash.com/photo-1694327671725-e2a81cda3436?w=1200&h=1500&fit=crop&q=80&fm=jpg",
+									"alt": "Rows of solar panels on a roof in warm light",
+									"filename": "halden-solar.jpg"
+								}
+							},
+							"image_caption": "Rooftop solar · 312 MWh generated this year",
+							"image_first": true
+						},
+						{
+							"_type": "marketing_stats",
+							"_version": 1,
+							"_key": "results",
+							"headline": "What customers see in their first year.",
+							"subheadline": "Measured across 4,800 connected buildings.",
+							"stats": [
+								{ "value": "23%", "label": "Lower energy spend, on average" },
+								{ "value": "4,800", "label": "Buildings connected across 14 countries" },
+								{ "value": "9 mo", "label": "Average payback period" },
+								{ "value": "99.98%", "label": "Data uptime over the last 12 months" }
+							]
+						},
+						{
+							"_type": "marketing_testimonials",
+							"_version": 1,
+							"_key": "customers",
+							"anchor_id": "customers",
+							"headline": "Customers",
+							"testimonials": [
+								{
+									"quote": "We found more savings in the first month than in five years of energy audits. Halden paid for itself before the first invoice was due.",
+									"author": "Maya Okafor",
+									"role": "Director of Facilities",
+									"company": "Calder University"
+								},
+								{
+									"quote": "Our GRESB submission used to take a quarter. Now it is a week of review, and the numbers hold up.",
+									"author": "Daniel Reyes",
+									"role": "Head of Sustainability",
+									"company": "Oakline"
+								},
+								{
+									"quote": "Guests never notice, which is the point. Our hotels use 19% less energy and nobody had to change how they work.",
+									"author": "Priya Nair",
+									"role": "VP Operations",
+									"company": "Arden Hotels"
+								}
+							]
+						},
+						{
+							"_type": "marketing_faq",
+							"_version": 1,
+							"_key": "faq",
+							"anchor_id": "faq",
+							"headline": "Questions, answered.",
+							"subheadline": "Something else on your mind? Our building engineers reply within one working day.",
+							"items": [
+								{
+									"question": "Do we need new hardware?",
+									"answer": "Usually not. Halden connects to the meters, building management systems and utility accounts you already have. Where a site has no metering, we ship clip-on sensors that take an hour to fit."
+								},
+								{
+									"question": "How quickly will we see savings?",
+									"answer": "Most teams act on their first findings within two weeks of connecting a building. The early fixes are usually schedule and setpoint changes, such as plant that runs overnight or heating in empty rooms. The savings report at day 30 measures each change against the building's own baseline."
+								},
+								{
+									"question": "Which reporting frameworks do you support?",
+									"answer": "Halden prepares CSRD, GRESB, ENERGY STAR, SECR and NABERS reports from the same metered data, so the figures agree across every submission. Your auditor can have read-only access to the readings behind each number."
+								},
+								{
+									"question": "Is our data secure?",
+									"answer": "Halden is audited every year against SOC 2 Type II and certified to ISO 27001. You choose EU or US hosting, and your meter data is encrypted in transit and at rest."
+								},
+								{
+									"question": "Can Halden change settings on its own?",
+									"answer": "Only inside limits you set, such as comfort bands, occupancy hours and equipment you mark as off limits. Every change is logged with the reason it was made, and anyone on your team can roll it back."
+								}
+							]
+						},
+						{
+							"_type": "marketing_cta",
+							"_version": 1,
+							"_key": "cta",
+							"headline": "See what your buildings could save.",
+							"body": "Book a 30-minute walkthrough with a building engineer. Bring a utility bill and we will bring the numbers.",
+							"primary_cta_label": "Book a demo",
+							"primary_cta_url": "/contact",
+							"secondary_cta_label": "Talk to sales",
+							"secondary_cta_url": "mailto:sales@halden.example",
+							"image": {
+								"$media": {
+									"url": "https://images.unsplash.com/photo-1674763973434-75e1930d4959?w=2400&h=1350&fit=crop&q=80&fm=jpg",
+									"alt": "Timber-lined atrium opening to the sky",
+									"filename": "halden-timber-atrium.jpg"
+								}
+							}
 						}
 					]
-				}
-			}
-		],
-		"posts": [
-			{
-				"id": "post-1",
-				"slug": "building-for-the-long-term",
-				"status": "published",
-				"data": {
-					"title": "Building for the Long Term",
-					"excerpt": "The frameworks will change. The databases will change. What survives is the clarity of your thinking.",
-					"featured_image": {
-						"$media": {
-							"url": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=1200&h=800&fit=crop",
-							"alt": "Code on a monitor in a dark room",
-							"filename": "building-long-term.jpg"
-						}
-					},
-					"content": [
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Every few years the industry collectively decides that everything we've been doing is wrong and there's a better way. New frameworks, new paradigms, new build tools. The churn is relentless, and if you're not careful, you spend more time migrating than building.",
-									"_key": "k1"
-								}
-							],
-							"_key": "k0"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "I've been writing software long enough to have seen several of these cycles. jQuery to Backbone to Angular to React to whatever comes next. Each transition felt urgent at the time. Looking back, the things that actually mattered were rarely about the framework.",
-									"_key": "k3"
-								}
-							],
-							"_key": "k2"
-						},
-						{
-							"_type": "block",
-							"style": "h2",
-							"children": [
-								{
-									"_type": "span",
-									"text": "What survives",
-									"_key": "k5"
-								}
-							],
-							"_key": "k4"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Clean data models survive. Clear boundaries between systems survive. Good naming survives. The decision to keep things simple when you could have made them clever - that definitely survives.",
-									"_key": "k7"
-								}
-							],
-							"_key": "k6"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "What doesn't survive is code that was written to impress, abstractions built for problems that never materialized, and architectures designed around a framework's opinions rather than the domain's reality.",
-									"_key": "k9"
-								}
-							],
-							"_key": "k8"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "The best code I've written is boring. It reads like prose, does one thing well, and doesn't require a PhD in category theory to understand. The worst code I've written was technically impressive at the time.",
-									"_key": "k11"
-								}
-							],
-							"_key": "k10"
-						}
-					]
-				},
-				"bylines": [
-					{
-						"byline": "byline-editorial"
-					},
-					{
-						"byline": "byline-guest",
-						"roleLabel": "Guest essay"
-					}
-				],
-				"taxonomies": {
-					"category": ["development"],
-					"tag": ["opinion"]
 				}
 			},
 			{
-				"id": "post-2",
-				"slug": "the-case-for-static",
+				"id": "pricing",
+				"slug": "pricing",
 				"status": "published",
 				"data": {
-					"title": "The Case for Static",
-					"excerpt": "Static sites aren't a step backwards. They're what you get when you take performance and simplicity seriously.",
-					"featured_image": {
-						"$media": {
-							"url": "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1200&h=800&fit=crop",
-							"alt": "Laptop and coffee on a wooden table",
-							"filename": "case-for-static.jpg"
-						}
-					},
+					"title": "Pricing",
 					"content": [
 						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "There's a certain irony in the fact that the web started static, went dynamic, and is now swinging back toward static again. But the static sites of today aren't the hand-coded HTML pages of 1998. They're generated, optimized, and deployed to edge networks that serve them in milliseconds.",
-									"_key": "k1"
-								}
-							],
-							"_key": "k0"
+							"_type": "marketing_hero",
+							"_version": 1,
+							"_key": "pricing-hero",
+							"headline": "Pricing that pays for itself.",
+							"subheadline": "Start with one building for free. Every plan includes onboarding, live metering and support from energy engineers.",
+							"centered": true
 						},
 						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
+							"_type": "marketing_pricing",
+							"_version": 1,
+							"_key": "pricing-plans",
+							"plans": [
 								{
-									"_type": "span",
-									"text": "The pitch for server-rendered everything was compelling: dynamic content, personalization, real-time data. But most sites don't need most of that most of the time. A blog post doesn't need to be rendered on every request. A product page doesn't change every second.",
-									"_key": "k3"
+									"name": "Pilot",
+									"price": "Free",
+									"period": "for 30 days",
+									"description": "Prove the savings on one building before you commit.",
+									"features": "1 building\nLive metering and fault detection\nSavings report at day 30\nEmail support",
+									"cta_label": "Start a pilot",
+									"cta_url": "/contact"
+								},
+								{
+									"name": "Portfolio",
+									"price": "$149",
+									"period": "/building/month",
+									"description": "For owners and operators running 5 to 500 buildings.",
+									"features": "Unlimited buildings and users\nAutomated BMS control\nCSRD, GRESB and ENERGY STAR reporting\nPortfolio benchmarking\nA dedicated energy engineer",
+									"cta_label": "Book a demo",
+									"cta_url": "/contact",
+									"highlighted": true,
+									"badge": "Most popular"
+								},
+								{
+									"name": "Enterprise",
+									"price": "Custom",
+									"description": "For global portfolios with custom integration and security needs.",
+									"features": "Everything in Portfolio\nSSO, SCIM and audit logs\nEU or US data residency\nCustom integrations and API access\n99.9% uptime SLA",
+									"cta_label": "Talk to sales",
+									"cta_url": "mailto:sales@halden.example"
 								}
-							],
-							"_key": "k2"
+							]
 						},
 						{
-							"_type": "block",
-							"style": "h2",
-							"children": [
+							"_type": "marketing_faq",
+							"_version": 1,
+							"_key": "pricing-faq",
+							"headline": "Pricing questions.",
+							"subheadline": "Still deciding? Talk to an energy engineer before you start a pilot.",
+							"items": [
 								{
-									"_type": "span",
-									"text": "The performance argument",
-									"_key": "k5"
+									"question": "What counts as a building?",
+									"answer": "Any site with its own utility meter or building management system, from a 40-storey office tower to a single retail unit. Several buildings on one shared meter count as one until you add sub-meters to measure them separately."
+								},
+								{
+									"question": "Are there setup fees?",
+									"answer": "No. Every plan, including the pilot, covers onboarding, connecting your meters and building systems, and training for your team. Clip-on sensors for unmetered sites are supplied at cost."
+								},
+								{
+									"question": "Is there a discount for annual billing?",
+									"answer": "Yes. Annual billing takes 15% off the Portfolio price and is invoiced on NET 30 terms. You can move from monthly to annual billing at any time."
+								},
+								{
+									"question": "What happens after the pilot?",
+									"answer": "On day 30 you receive a savings report for the pilot building. Move to the Portfolio plan to keep its data, alerts and automations running, or stop there and we delete the data within 30 days."
 								}
-							],
-							"_key": "k4"
+							]
 						},
 						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "A static file served from a CDN is as fast as the web gets. No cold starts, no database queries, no server-side rendering overhead. The Time to First Byte is essentially the network latency to your nearest edge node. You can't beat physics.",
-									"_key": "k7"
-								}
-							],
-							"_key": "k6"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "And when you do need dynamic behavior, you can add it surgically. An island of interactivity in a sea of static HTML. The best of both worlds, without paying the cost of either at all times.",
-									"_key": "k9"
-								}
-							],
-							"_key": "k8"
+							"_type": "marketing_cta",
+							"_version": 1,
+							"_key": "pricing-cta",
+							"headline": "Start with one building.",
+							"body": "Connect a site in an afternoon and see your first savings report in 30 days.",
+							"primary_cta_label": "Start a pilot",
+							"primary_cta_url": "/contact",
+							"secondary_cta_label": "Talk to sales",
+							"secondary_cta_url": "mailto:sales@halden.example"
 						}
 					]
-				},
-				"bylines": [
-					{
-						"byline": "byline-editorial"
-					}
-				],
-				"taxonomies": {
-					"category": ["development"],
-					"tag": ["webdev", "opinion"]
 				}
 			},
 			{
-				"id": "post-3",
-				"slug": "learning-in-public",
+				"id": "contact",
+				"slug": "contact",
 				"status": "published",
 				"data": {
-					"title": "Learning in Public",
-					"excerpt": "Writing about what you're learning is the fastest way to find out what you don't actually understand.",
-					"featured_image": {
-						"$media": {
-							"url": "https://images.unsplash.com/photo-1432821596592-e2c18b78144f?w=1200&h=800&fit=crop",
-							"alt": "Notebook and pen on a desk",
-							"filename": "learning-in-public.jpg"
-						}
-					},
+					"title": "Contact",
 					"content": [
 						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "I started writing about things I was learning not because I had anything original to say, but because I kept forgetting what I'd figured out. The blog posts were notes to my future self, published publicly more out of laziness than courage.",
-									"_key": "k1"
-								}
-							],
-							"_key": "k0"
+							"_type": "marketing_hero",
+							"_version": 1,
+							"_key": "contact-hero",
+							"headline": "Talk to the Halden team",
+							"subheadline": "Questions, a demo, or a building you want us to look at? Email the team that can help and include any useful context. We reply within one working day.",
+							"centered": true
 						},
 						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
+							"_type": "marketing_contact",
+							"_version": 1,
+							"_key": "contact-options",
+							"options": [
 								{
-									"_type": "span",
-									"text": "What I didn't expect was how much the writing itself would accelerate the learning. There's a particular kind of clarity that comes from trying to explain something to someone else. The gaps in your understanding, which you can happily ignore when the knowledge lives only in your head, become painfully obvious when you try to put it into sentences.",
-									"_key": "k3"
-								}
-							],
-							"_key": "k2"
-						},
-						{
-							"_type": "block",
-							"style": "h2",
-							"children": [
+									"icon": "email",
+									"title": "General questions",
+									"description": "Ask about Halden, partnerships, press, or a building you’d like us to look at.",
+									"link_label": "hello@halden.example",
+									"link_url": "mailto:hello@halden.example"
+								},
 								{
-									"_type": "span",
-									"text": "The fear of being wrong",
-									"_key": "k5"
-								}
-							],
-							"_key": "k4"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
+									"icon": "support",
+									"title": "Customer support",
+									"description": "Get help with your account, a meter integration, or a building that’s already connected.",
+									"link_label": "support@halden.example",
+									"link_url": "mailto:support@halden.example"
+								},
 								{
-									"_type": "span",
-									"text": "The biggest barrier isn't time or writing skill. It's the fear of publishing something that turns out to be wrong. But here's the thing: being wrong publicly is one of the most efficient ways to learn. Someone will correct you, often kindly, and you'll remember that correction forever.",
-									"_key": "k7"
+									"icon": "sales",
+									"title": "Sales",
+									"description": "Talk through pricing, a pilot, procurement or a security review for your portfolio.",
+									"link_label": "sales@halden.example",
+									"link_url": "mailto:sales@halden.example"
 								}
-							],
-							"_key": "k6"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "The posts that helped me most weren't written by experts. They were written by people one step ahead of me on the same path, in language that hadn't yet been polished into abstraction. There's a place for that kind of writing, and it's more valuable than most people realize.",
-									"_key": "k9"
-								}
-							],
-							"_key": "k8"
-						}
-					]
-				},
-				"taxonomies": {
-					"category": ["notes"],
-					"tag": ["opinion"]
-				}
-			},
-			{
-				"id": "post-4",
-				"slug": "small-tools-big-impact",
-				"status": "published",
-				"data": {
-					"title": "Small Tools, Big Impact",
-					"excerpt": "The best developer tools do one thing well and get out of your way. A love letter to focused software.",
-					"featured_image": {
-						"$media": {
-							"url": "https://images.unsplash.com/photo-1575026615908-666710ae5e47?w=1200&h=800&fit=crop",
-							"alt": "Wrenches and hand tools hanging on a workshop wall",
-							"filename": "small-tools.jpg"
-						}
-					},
-					"content": [
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "There's a class of software that doesn't get enough appreciation. Not the frameworks or the platforms or the IDEs, but the small, sharp tools that solve one problem so well you stop thinking about them. They become invisible, which is the highest compliment you can pay a tool.",
-									"_key": "k1"
-								}
-							],
-							"_key": "k0"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "I'm talking about things like ripgrep, which searches code so fast it changed how I think about searching. Or jq, which makes JSON feel like a first-class data format in the terminal. Or curl, which has been quietly powering the internet's plumbing for decades.",
-									"_key": "k3"
-								}
-							],
-							"_key": "k2"
-						},
-						{
-							"_type": "block",
-							"style": "h2",
-							"children": [
-								{
-									"_type": "span",
-									"text": "The Unix philosophy, revisited",
-									"_key": "k5"
-								}
-							],
-							"_key": "k4"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Do one thing well. The advice is old enough to be a cliche, but the best modern tools still follow it. They don't try to be platforms. They don't have plugin ecosystems or configuration languages or startup wizards. They do their job and they compose with other tools that do theirs.",
-									"_key": "k7"
-								}
-							],
-							"_key": "k6"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "The temptation is always to add more. One more feature, one more option, one more integration. But every addition is a decision someone has to make, a path through the code that has to be maintained, a thing that can break. The best tools resist this. They stay small, and in staying small, they stay reliable.",
-									"_key": "k9"
-								}
-							],
-							"_key": "k8"
-						}
-					]
-				},
-				"taxonomies": {
-					"category": ["development"],
-					"tag": ["tools"]
-				}
-			},
-			{
-				"id": "post-5",
-				"slug": "designing-with-constraints",
-				"status": "published",
-				"data": {
-					"title": "Designing with Constraints",
-					"excerpt": "Limitations aren't obstacles to creativity. They're the structure that makes creativity possible.",
-					"featured_image": {
-						"$media": {
-							"url": "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=1200&h=800&fit=crop",
-							"alt": "Pencils and design tools on a desk",
-							"filename": "designing-with-constraints.jpg"
-						}
-					},
-					"content": [
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Give a designer a blank canvas and unlimited time, and they'll often produce something mediocre. Give them a tight brief, a small screen, and a deadline, and they'll surprise you. This isn't a paradox - it's how creativity actually works.",
-									"_key": "k1"
-								}
-							],
-							"_key": "k0"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Constraints force decisions. When you can't use more than two typefaces, you have to choose carefully. When the page has to load in under a second, every element earns its place. When the interface has to work on a 320px screen, you discover what's truly essential.",
-									"_key": "k3"
-								}
-							],
-							"_key": "k2"
-						},
-						{
-							"_type": "block",
-							"style": "h2",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Embracing the box",
-									"_key": "k5"
-								}
-							],
-							"_key": "k4"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "The web itself is a constraint. HTML flows in one direction. CSS has a box model. Browsers have viewport sizes and font rendering quirks. You can fight these constraints or you can work with them, and the results are dramatically different.",
-									"_key": "k7"
-								}
-							],
-							"_key": "k6"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "The designs I admire most don't look like they were forced through a framework. They look like they grew naturally from the medium, respecting its grain rather than working against it. That only happens when you treat constraints as creative partners rather than enemies.",
-									"_key": "k9"
-								}
-							],
-							"_key": "k8"
-						}
-					]
-				},
-				"taxonomies": {
-					"category": ["design"],
-					"tag": ["creativity"]
-				}
-			},
-			{
-				"id": "post-6",
-				"slug": "a-weekend-with-a-side-project",
-				"status": "published",
-				"data": {
-					"title": "A Weekend with a Side Project",
-					"excerpt": "No stakeholders, no deadlines, no Jira tickets. Just you and a dumb idea that might turn into something.",
-					"featured_image": {
-						"$media": {
-							"url": "https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=1200&h=800&fit=crop",
-							"alt": "Code on a screen with a dark theme",
-							"filename": "weekend-side-project.jpg"
-						}
-					},
-					"content": [
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Saturday morning. Coffee's made, the house is quiet, and I've got an idea that's been nagging at me all week. Not a good idea, necessarily - just a persistent one. A small tool that does a thing I keep doing manually. How hard could it be?",
-									"_key": "k1"
-								}
-							],
-							"_key": "k0"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "This is the best kind of programming. No requirements document, no sprint planning, no pull request reviews. Just a text editor and a problem. The freedom to make terrible architectural decisions, rewrite everything twice, and follow tangents that turn out to be dead ends.",
-									"_key": "k3"
-								}
-							],
-							"_key": "k2"
-						},
-						{
-							"_type": "block",
-							"style": "h2",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Why side projects matter",
-									"_key": "k5"
-								}
-							],
-							"_key": "k4"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Side projects are where you learn things your day job would never teach you. Not because the problems are harder, but because you're free to take risks. Try a language you've never used. Build something without a framework. Deploy to a platform you've only read about. The stakes are zero, which makes the learning maximum.",
-									"_key": "k7"
-								}
-							],
-							"_key": "k6"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "By Sunday evening, the thing sort of works. It's rough, the error handling is nonexistent, and the README is a single sentence. But it solves the problem I set out to solve, and I learned three things I didn't know on Friday. Not a bad weekend.",
-									"_key": "k9"
-								}
-							],
-							"_key": "k8"
-						}
-					]
-				},
-				"taxonomies": {
-					"category": ["development"],
-					"tag": ["creativity"]
-				}
-			},
-			{
-				"id": "post-7",
-				"slug": "notes-on-simplicity",
-				"status": "published",
-				"data": {
-					"title": "Notes on Simplicity",
-					"excerpt": "Simplicity isn't the absence of complexity. It's the result of understanding a problem well enough to solve it cleanly.",
-					"featured_image": {
-						"$media": {
-							"url": "https://images.unsplash.com/photo-1559051668-e1fa58f25786?w=1200&h=800&fit=crop",
-							"alt": "Geometric pattern carved into white paper",
-							"filename": "notes-on-simplicity.jpg"
-						}
-					},
-					"content": [
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Every piece of software starts simple. A few files, a clear purpose, a small surface area. Then features get added, edge cases get handled, and before long you're looking at something that requires a diagram to understand. This isn't inevitable, but it takes discipline to prevent.",
-									"_key": "k1"
-								}
-							],
-							"_key": "k0"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "The hard part of simplicity isn't the initial design. It's the ongoing resistance to complication. Every feature request, every bug fix, every refactor is an opportunity to add complexity. Saying no is the most important design skill, and the least celebrated.",
-									"_key": "k3"
-								}
-							],
-							"_key": "k2"
-						},
-						{
-							"_type": "block",
-							"style": "h2",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Removing as a feature",
-									"_key": "k5"
-								}
-							],
-							"_key": "k4"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "The best version of a product often has fewer features than the previous one. Not because features were missing, but because someone had the courage to remove things that weren't earning their keep. Every feature has a cost - in maintenance, in cognitive load, in the weight of the interface.",
-									"_key": "k7"
-								}
-							],
-							"_key": "k6"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Simplicity is a practice, not a destination. You never arrive at simple. You just keep asking: is this necessary? Could this be clearer? Is there a way to solve this problem by removing something instead of adding something? The answer is yes more often than you'd expect.",
-									"_key": "k9"
-								}
-							],
-							"_key": "k8"
-						}
-					]
-				},
-				"taxonomies": {
-					"category": ["notes"],
-					"tag": ["opinion"]
-				}
-			},
-			{
-				"id": "post-draft",
-				"slug": "work-in-progress",
-				"status": "draft",
-				"data": {
-					"title": "Work in Progress",
-					"excerpt": "This post is still being written.",
-					"content": [
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "This is a draft post that won't appear in the public listing.",
-									"_key": "k1"
-								}
-							],
-							"_key": "k0"
+							]
 						}
 					]
 				}
